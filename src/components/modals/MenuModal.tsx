@@ -14,18 +14,18 @@ export default function MenuModal() {
   const { apiBaseUrl } = useSettings();
   const go = (fn: () => void) => () => { close(); fn(); };
   return (
-    <ModalShell title="Register menu" onClose={close} size="wide">
+    <ModalShell title="Menú de la caja" onClose={close} size="wide">
       <div className="option-list" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-        <button className="key key--lg" onClick={go(() => nav('/reports'))}><FileBarChart2 size={20} /> Reports / X report</button>
-        <button className="key key--lg key--info" onClick={go(() => void pos.cashDrop())}><ArrowDownToLine size={20} /> Cash drop (safe)</button>
-        <button className="key key--lg key--warn" onClick={go(() => void pos.paidOut())}><ArrowUpFromLine size={20} /> Paid out</button>
-        <button className="key key--lg" onClick={go(() => openCustomerDisplayWindow())}><Monitor size={20} /> Customer display</button>
-        <button className="key key--lg" onClick={go(() => nav('/settings'))}><Settings size={20} /> Settings & hardware</button>
-        <button className="key key--lg" onClick={go(() => nav('/about'))}><Info size={20} /> About this software</button>
-        <button className="key key--lg key--danger" style={{ gridColumn: '1 / -1' }} onClick={go(() => void pos.endShift())}><LogOut size={20} /> End shift & sign out (Z report)</button>
+        <button className="key key--lg" onClick={go(() => nav('/reports'))}><FileBarChart2 size={20} /> Reportes / Reporte X</button>
+        <button className="key key--lg key--info" onClick={go(() => void pos.cashDrop())}><ArrowDownToLine size={20} /> Depósito a caja fuerte</button>
+        <button className="key key--lg key--warn" onClick={go(() => void pos.paidOut())}><ArrowUpFromLine size={20} /> Pago de gasto</button>
+        <button className="key key--lg" onClick={go(() => openCustomerDisplayWindow())}><Monitor size={20} /> Pantalla del cliente</button>
+        <button className="key key--lg" onClick={go(() => nav('/settings'))}><Settings size={20} /> Configuración y hardware</button>
+        <button className="key key--lg" onClick={go(() => nav('/about'))}><Info size={20} /> Acerca de este software</button>
+        <button className="key key--lg key--danger" style={{ gridColumn: '1 / -1' }} onClick={go(() => void pos.endShift())}><LogOut size={20} /> Cerrar turno y salir (reporte Z)</button>
       </div>
       <p className="muted" style={{ fontSize: 12, marginTop: 12 }}>
-        Back office: {apiBaseUrl} · {online ? 'connected' : 'offline'} · {queue.length} queued · {sentCount} events sent{lastSyncAt ? ` · last sync ${new Date(lastSyncAt).toLocaleTimeString()}` : ''}
+        Administración: {apiBaseUrl} · {online ? 'conectado' : 'sin conexión'} · {queue.length} en cola · {sentCount} eventos enviados{lastSyncAt ? ` · última sincronización ${new Date(lastSyncAt).toLocaleTimeString('es-US')}` : ''}
       </p>
     </ModalShell>
   );

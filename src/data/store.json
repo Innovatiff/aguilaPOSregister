@@ -1,6 +1,6 @@
 {
   "store": {
-    "name": "El Aguila Market",
+    "name": "El Águila Market",
     "legalName": "El Aguila Market Inc.",
     "address1": "42 Erie St S",
     "city": "Leamington",
@@ -10,7 +10,7 @@
     "phone": "519-322-4222",
     "email": "pleaguila@gmail.com",
     "currency": "CAD",
-    "locale": "en-CA",
+    "locale": "es-US",
     "timezone": "America/Toronto",
     "taxes": [
       {
@@ -20,34 +20,34 @@
         "registration": "HST # 000000000 RT0001"
       }
     ],
-    "receiptHeader": "Thank you for shopping at El Aguila Market!",
-    "receiptFooter": "Returns within 14 days with receipt. Gracias por su compra.",
+    "receiptHeader": "¡Gracias por su compra en El Águila Market!",
+    "receiptFooter": "Devoluciones dentro de 14 días con recibo. ¡Vuelva pronto!",
     "openingFloat": 200,
     "managerApprovalThreshold": 50
   },
   "registers": [
     {
       "id": "REG-01",
-      "name": "Front Register",
-      "location": "Checkout 1",
+      "name": "Caja 1",
+      "location": "Mostrador 1",
       "hardware": {
-        "terminal": "Moneris / Interac (semi-integrated)",
-        "customerDisplay": "Secondary 15\" screen",
-        "scanner": "USB barcode scanner (keyboard wedge)",
-        "printer": "Thermal 80mm",
-        "drawer": "Printer-driven (RJ12)"
+        "terminal": "Moneris / Interac (semi-integrada)",
+        "customerDisplay": "Pantalla secundaria de 15\"",
+        "scanner": "Escáner de código de barras USB (emulación de teclado)",
+        "printer": "Térmica 80mm",
+        "drawer": "Controlado por la impresora (RJ12)"
       }
     },
     {
       "id": "REG-02",
-      "name": "Second Register",
-      "location": "Checkout 2",
+      "name": "Caja 2",
+      "location": "Mostrador 2",
       "hardware": {
-        "terminal": "Moneris / Interac (semi-integrated)",
-        "customerDisplay": "Secondary 15\" screen",
-        "scanner": "USB barcode scanner (keyboard wedge)",
-        "printer": "Thermal 80mm",
-        "drawer": "Printer-driven (RJ12)"
+        "terminal": "Moneris / Interac (semi-integrada)",
+        "customerDisplay": "Pantalla secundaria de 15\"",
+        "scanner": "Escáner de código de barras USB (emulación de teclado)",
+        "printer": "Térmica 80mm",
+        "drawer": "Controlado por la impresora (RJ12)"
       }
     }
   ]

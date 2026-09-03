@@ -32,6 +32,18 @@ export interface PaymentTerminal {
 
 const BRANDS: Record<string, string> = { debit: 'Interac', visa: 'Visa', mastercard: 'MasterCard', amex: 'Amex' };
 
+/** Human-readable (Spanish) label for each terminal phase. */
+export const TERMINAL_PHASE_LABEL: Record<TerminalPhase, string> = {
+  idle: 'en espera',
+  connecting: 'conectando',
+  waiting_for_card: 'esperando tarjeta',
+  processing: 'procesando',
+  approved: 'aprobado',
+  declined: 'rechazado',
+  cancelled: 'cancelado',
+  error: 'error',
+};
+
 export class SimulatedTerminal implements PaymentTerminal {
   phase: TerminalPhase = 'idle';
   private subs = new Set<(phase: TerminalPhase, detail?: string) => void>();
@@ -63,10 +75,10 @@ export class SimulatedTerminal implements PaymentTerminal {
     this.cancel();
     return new Promise((resolve) => {
       this.pending = { amount, tenderType, resolve };
-      this.setPhase('connecting', 'Contacting terminal…');
+      this.setPhase('connecting', 'Contactando la terminal…');
       this.timers.push(
         window.setTimeout(() => {
-          this.setPhase('waiting_for_card', 'Customer: tap, insert or swipe card');
+          this.setPhase('waiting_for_card', 'Cliente: acerque, inserte o deslice la tarjeta');
           if (this.autoApprove) this.timers.push(window.setTimeout(() => this.simulateTap(), 2500));
         }, 700),
       );
@@ -75,16 +87,16 @@ export class SimulatedTerminal implements PaymentTerminal {
 
   simulateTap() {
     if (!this.pending || this.phase !== 'waiting_for_card') return;
-    this.setPhase('processing', 'Processing… please wait');
+    this.setPhase('processing', 'Procesando… espere por favor');
     this.timers.push(
       window.setTimeout(() => {
         const p = this.pending;
         if (!p) return;
         const authCode = Math.random().toString(36).slice(2, 8).toUpperCase();
         const last4 = String(Math.floor(1000 + Math.random() * 9000));
-        this.setPhase('approved', `APPROVED  Auth ${authCode}`);
+        this.setPhase('approved', `APROBADO  Aut. ${authCode}`);
         this.pending = null;
-        p.resolve({ approved: true, amount: p.amount, tenderType: p.tenderType, authCode, cardLast4: last4, cardBrand: BRANDS[p.tenderType] ?? 'Card', entryMode: 'tap', message: 'APPROVED', terminalId: this.terminalId });
+        p.resolve({ approved: true, amount: p.amount, tenderType: p.tenderType, authCode, cardLast4: last4, cardBrand: BRANDS[p.tenderType] ?? 'Tarjeta', entryMode: 'tap', message: 'APROBADO', terminalId: this.terminalId });
       }, 1300),
     );
   }
@@ -94,8 +106,8 @@ export class SimulatedTerminal implements PaymentTerminal {
     this.clearTimers();
     const p = this.pending;
     this.pending = null;
-    this.setPhase('declined', 'DECLINED — insufficient funds (simulated)');
-    p.resolve({ approved: false, amount: p.amount, tenderType: p.tenderType, message: 'DECLINED', terminalId: this.terminalId });
+    this.setPhase('declined', 'RECHAZADO — fondos insuficientes (simulado)');
+    p.resolve({ approved: false, amount: p.amount, tenderType: p.tenderType, message: 'RECHAZADO', terminalId: this.terminalId });
   }
 
   cancel() {
@@ -103,8 +115,8 @@ export class SimulatedTerminal implements PaymentTerminal {
     if (this.pending) {
       const p = this.pending;
       this.pending = null;
-      this.setPhase('cancelled', 'Cancelled by cashier');
-      p.resolve({ approved: false, amount: p.amount, tenderType: p.tenderType, message: 'CANCELLED', terminalId: this.terminalId });
+      this.setPhase('cancelled', 'Cancelado por el cajero');
+      p.resolve({ approved: false, amount: p.amount, tenderType: p.tenderType, message: 'CANCELADO', terminalId: this.terminalId });
     } else {
       this.setPhase('idle');
     }

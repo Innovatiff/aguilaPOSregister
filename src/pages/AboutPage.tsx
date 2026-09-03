@@ -7,44 +7,44 @@ export default function AboutPage() {
   return (
     <div className="page">
       <header className="page__header">
-        <button className="key key--sm" onClick={() => nav('/')}><ArrowLeft size={16} /> Back</button>
-        <h1>About Aguila POS</h1>
+        <button className="key key--sm" onClick={() => nav('/')}><ArrowLeft size={16} /> Volver</button>
+        <h1>Acerca de Aguila POS</h1>
       </header>
       <div className="page__body">
         <section className="card" style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
           <EagleMark size={72} />
           <div>
-            <h3 style={{ fontSize: 22, marginBottom: 4 }}>Aguila POS Suite — Register</h3>
-            <p>Version 1.0.0 (demo build) · Touch-first point of sale for El Aguila Market · Part of the Aguila POS Suite with the Back Office manager application.</p>
-            <p>Built by Innovatiff. This evaluation build contains demo data only.</p>
+            <h3 style={{ fontSize: 22, marginBottom: 4 }}>Aguila POS Suite — Caja</h3>
+            <p>Versión 1.0.0 (versión de demostración) · Punto de venta táctil para El Águila Market · Parte de Aguila POS Suite junto con la aplicación de administración Back Office.</p>
+            <p>Desarrollado por Innovatiff. Esta versión de evaluación contiene únicamente datos de demostración.</p>
           </div>
         </section>
         <section className="card">
-          <h3>What the register does</h3>
+          <h3>Qué hace la caja</h3>
           <div className="feature-grid">
-            <div className="feature"><b><ShieldCheck size={16} /> PIN sign-in & shifts</b><p>Each associate signs in with a PIN. Opening float, breaks and drawer counts are all recorded.</p></div>
-            <div className="feature"><b><Coffee size={16} /> Break = closed segment</b><p>Going on break closes the associate’s segment and sends a complete report to the manager instantly.</p></div>
-            <div className="feature"><b><ScanBarcode size={16} /> Scanning</b><p>USB scanners work out of the box: UPC/EAN, produce PLU stickers and deli-scale price labels.</p></div>
-            <div className="feature"><b><CreditCard size={16} /> Payments</b><p>Cash quick keys, Interac debit, Visa, MasterCard, Amex, gift cards and split payments, with a semi-integrated terminal flow.</p></div>
-            <div className="feature"><b><Monitor size={16} /> Customer display</b><p>A second screen shows the customer every item, the total and their change.</p></div>
-            <div className="feature"><b><Wifi size={16} /> Offline-first</b><p>If the internet drops the register keeps selling; every event is queued and synced when back online.</p></div>
-            <div className="feature"><b><Printer size={16} /> Receipts</b><p>80 mm thermal receipts with HST breakdown, reprints logged for the manager.</p></div>
-            <div className="feature"><b><Cloud size={16} /> Live back office</b><p>Every movement — sales, voids, discounts, no-sales, price checks — streams to the manager’s dashboard.</p></div>
+            <div className="feature"><b><ShieldCheck size={16} /> Inicio de sesión con PIN y turnos</b><p>Cada asociado inicia sesión con un PIN. El fondo inicial, los descansos y los conteos del cajón quedan registrados.</p></div>
+            <div className="feature"><b><Coffee size={16} /> Descanso = segmento cerrado</b><p>Al tomar un descanso se cierra el segmento del asociado y se envía un reporte completo al gerente al instante.</p></div>
+            <div className="feature"><b><ScanBarcode size={16} /> Escaneo</b><p>Los escáneres USB funcionan sin configuración: UPC/EAN, etiquetas PLU de frutas y verduras y etiquetas de precio de la báscula.</p></div>
+            <div className="feature"><b><CreditCard size={16} /> Pagos</b><p>Teclas rápidas de efectivo, débito Interac, Visa, MasterCard, Amex, tarjetas de regalo y pagos divididos, con un flujo de terminal semi-integrada.</p></div>
+            <div className="feature"><b><Monitor size={16} /> Pantalla del cliente</b><p>Una segunda pantalla muestra al cliente cada artículo, el total y su cambio.</p></div>
+            <div className="feature"><b><Wifi size={16} /> Funciona sin conexión</b><p>Si se cae el internet la caja sigue vendiendo; cada evento se pone en cola y se sincroniza al volver la conexión.</p></div>
+            <div className="feature"><b><Printer size={16} /> Recibos</b><p>Recibos térmicos de 80 mm con desglose de HST; las reimpresiones quedan registradas para el gerente.</p></div>
+            <div className="feature"><b><Cloud size={16} /> Administración en vivo</b><p>Cada movimiento — ventas, anulaciones, descuentos, aperturas de cajón, consultas de precio — se transmite al panel del gerente.</p></div>
           </div>
         </section>
         <section className="card">
-          <h3>Hardware roadmap</h3>
+          <h3>Plan de hardware</h3>
           <div className="list">
-            <div className="list-item"><div><b>Payment terminal (Interac / Moneris)</b><span>Semi-integrated: the register sends the amount, the customer pays on the PIN pad, the approval flows back automatically.</span></div><span className="badge badge--warn">planned</span></div>
-            <div className="list-item"><div><b>Dual screens</b><span>Associate touch screen + customer-facing display (already supported through the /customer window).</span></div><span className="badge badge--success">ready</span></div>
-            <div className="list-item"><div><b>Barcode scanner</b><span>USB keyboard-wedge scanners for checkout and for inventory counts in the back office.</span></div><span className="badge badge--success">ready</span></div>
-            <div className="list-item"><div><b>Receipt printer & cash drawer</b><span>ESC/POS thermal printer with printer-driven drawer kick.</span></div><span className="badge badge--warn">planned</span></div>
+            <div className="list-item"><div><b>Terminal de pago (Interac / Moneris)</b><span>Semi-integrada: la caja envía el monto, el cliente paga en el PIN pad y la aprobación regresa automáticamente.</span></div><span className="badge badge--warn">planeado</span></div>
+            <div className="list-item"><div><b>Doble pantalla</b><span>Pantalla táctil del asociado + pantalla para el cliente (ya disponible mediante la ventana /customer).</span></div><span className="badge badge--success">listo</span></div>
+            <div className="list-item"><div><b>Escáner de códigos de barras</b><span>Escáneres USB tipo teclado para la caja y para conteos de inventario en administración.</span></div><span className="badge badge--success">listo</span></div>
+            <div className="list-item"><div><b>Impresora de recibos y cajón de efectivo</b><span>Impresora térmica ESC/POS con apertura del cajón controlada por la impresora.</span></div><span className="badge badge--warn">planeado</span></div>
           </div>
         </section>
         <section className="card">
-          <h3>Support</h3>
-          <p>Innovatiff · support desk available Monday to Saturday · Remote assistance and on-site installation available in the Windsor–Essex region.</p>
-          <p className="muted">© {new Date().getFullYear()} Innovatiff. All product names are trademarks of their respective owners.</p>
+          <h3>Soporte</h3>
+          <p>Innovatiff · mesa de soporte disponible de lunes a sábado · Asistencia remota e instalación en sitio disponibles en la región de Windsor–Essex.</p>
+          <p className="muted">© {new Date().getFullYear()} Innovatiff. Todos los nombres de productos son marcas registradas de sus respectivos propietarios.</p>
         </section>
       </div>
     </div>

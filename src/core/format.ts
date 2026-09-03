@@ -1,19 +1,19 @@
-export function fmtTime(iso: string | null | undefined, locale = 'en-CA'): string {
+export function fmtTime(iso: string | null | undefined, locale = 'es-US'): string {
   if (!iso) return '—';
   return new Date(iso).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
 }
 
-export function fmtTimeSec(iso: string | null | undefined, locale = 'en-CA'): string {
+export function fmtTimeSec(iso: string | null | undefined, locale = 'es-US'): string {
   if (!iso) return '—';
   return new Date(iso).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
-export function fmtDate(iso: string | null | undefined, locale = 'en-CA'): string {
+export function fmtDate(iso: string | null | undefined, locale = 'es-US'): string {
   if (!iso) return '—';
   return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
 
-export function fmtDateTime(iso: string | null | undefined, locale = 'en-CA'): string {
+export function fmtDateTime(iso: string | null | undefined, locale = 'es-US'): string {
   if (!iso) return '—';
   return `${fmtDate(iso, locale)} ${fmtTime(iso, locale)}`;
 }
@@ -33,13 +33,45 @@ export function elapsedSince(iso: string, now = Date.now()): string {
   return `${Math.floor(min / 60)}h ${String(min % 60).padStart(2, '0')}m`;
 }
 
+/** Simple Spanish pluralizer: plural(1, 'artículo') -> "1 artículo", plural(3, 'artículo') -> "3 artículos". */
+export function plural(n: number, singular: string, pluralForm = `${singular}s`): string {
+  return `${n} ${Math.abs(n) === 1 ? singular : pluralForm}`;
+}
+
 export const TENDER_LABEL: Record<string, string> = {
-  cash: 'Cash',
-  debit: 'Interac Debit',
+  cash: 'Efectivo',
+  debit: 'Débito Interac',
   visa: 'Visa',
   mastercard: 'MasterCard',
   amex: 'Amex',
-  gift: 'Gift Card',
+  gift: 'Tarjeta de regalo',
   cheque: 'Cheque',
-  other: 'Other',
+  other: 'Otro',
+};
+
+export const ROLE_LABEL: Record<string, string> = {
+  cashier: 'Cajero/a',
+  supervisor: 'Supervisor/a',
+  manager: 'Gerente',
+};
+
+export const TXN_STATUS_LABEL: Record<string, string> = {
+  open: 'abierta',
+  completed: 'completada',
+  voided: 'anulada',
+  held: 'en espera',
+};
+
+export const BARCODE_KIND_LABEL: Record<string, string> = {
+  'upc-a': 'UPC-A',
+  'ean-13': 'EAN-13',
+  'price-embedded': 'etiqueta de báscula',
+  plu: 'PLU',
+  'plu-entry': 'PLU',
+  unknown: 'desconocido',
+};
+
+export const CATALOG_SOURCE_LABEL: Record<string, string> = {
+  bundled: 'local',
+  server: 'servidor',
 };

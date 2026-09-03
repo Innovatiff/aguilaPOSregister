@@ -16,25 +16,25 @@ export default function Keypad() {
             {k}
           </button>
         ))}
-        <button className="key key--ghost" onClick={() => setBuffer(buffer.slice(0, -1))} aria-label="Backspace">
+        <button className="key key--ghost" onClick={() => setBuffer(buffer.slice(0, -1))} aria-label="Retroceso">
           <Delete size={22} />
         </button>
         <button className="key key--accent key--enter" style={{ gridColumn: 'span 2' }} onClick={() => void pos.enterPlu()}>
-          ENTER / PLU
+          ENTRAR / PLU
         </button>
       </div>
       <div className="disc-keys">
         <button className="key key--sm key--purple" onClick={() => void pos.discount('txn', 'amount')}>
-          $ Discount
+          $ Descuento
         </button>
         <button className="key key--sm key--purple" onClick={() => void pos.discount('txn', 'percent')}>
-          % Discount
+          % Descuento
         </button>
         <button className="key key--sm key--purple" onClick={() => void pos.discount('line', 'amount')}>
-          $ Item Disc
+          $ Desc. artículo
         </button>
         <button className="key key--sm key--purple" onClick={() => void pos.discount('line', 'percent')}>
-          % Item Disc
+          % Desc. artículo
         </button>
       </div>
     </section>

@@ -5,6 +5,7 @@ import { useCatalog, searchProducts } from '../state/catalog';
 import { pos } from '../state/pos';
 import { CategoryIcon } from './Icon';
 import { formatMoney } from '../core/money';
+import { plural } from '../core/format';
 import type { Product } from '../core/types';
 
 export default function CatalogGrid() {
@@ -41,7 +42,7 @@ export default function CatalogGrid() {
           {p.soldByWeight ? '/kg' : ''}
         </span>
         <span className="tile__meta">
-          {p.soldByWeight ? 'weighed' : `${p.stock} in stock`}
+          {p.soldByWeight ? 'por peso' : `${p.stock} en existencia`}
           {p.taxable ? ' · HST' : ''}
         </span>
       </button>
@@ -53,21 +54,21 @@ export default function CatalogGrid() {
       <div className="catalog__toolbar">
         {view !== 'categories' ? (
           <button className="key key--sm" onClick={() => { setView('categories', null); setSearch(''); }}>
-            <ArrowLeft size={16} /> Categories
+            <ArrowLeft size={16} /> Categorías
           </button>
         ) : null}
         {view === 'items' && active ? (
           <h3>
             <span className="swatch" style={{ background: active.color }} /> {active.name}
             <span className="muted" style={{ fontWeight: 500, fontSize: 12 }}>
-              {active.taxable ? 'HST 13%' : 'zero-rated'} · {active.note || `${items.length} items`}
+              {active.taxable ? 'HST 13%' : 'sin impuesto'} · {active.note || plural(items.length, 'artículo')}
             </span>
           </h3>
         ) : (
           <div className="search">
             <Search size={16} color="#8f9cbb" />
             <input
-              placeholder="Search item name, PLU or barcode…"
+              placeholder="Buscar por nombre, PLU o código de barras…"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -90,18 +91,18 @@ export default function CatalogGrid() {
                 <CategoryIcon name={c.icon} size={22} />
               </span>
               <span className="tile__name">{c.short}</span>
-              <span className="tile__meta">{c.taxable ? 'HST' : 'no tax'}</span>
+              <span className="tile__meta">{c.taxable ? 'HST' : 'sin impuesto'}</span>
             </button>
           ))}
         {view === 'items' && items.map((p) => <Item key={p.id} p={p} />)}
         {view === 'items' && active && (
           <button className="tile tile--open" onClick={() => pos.handleCategoryTap(active)}>
-            <span className="tile__name">Open price</span>
-            <span className="tile__meta">type amount, then tap</span>
+            <span className="tile__name">Precio abierto</span>
+            <span className="tile__meta">escriba el monto y luego toque</span>
           </button>
         )}
         {view === 'search' && results.map((p) => <Item key={p.id} p={p} />)}
-        {view === 'search' && results.length === 0 && <div className="muted" style={{ padding: 10 }}>No items match “{search}”.</div>}
+        {view === 'search' && results.length === 0 && <div className="muted" style={{ padding: 10 }}>Ningún artículo coincide con “{search}”.</div>}
       </div>
     </section>
   );

@@ -19,7 +19,7 @@ export default function ModalShell({ title, subtitle, size = 'md', onClose, chil
             {subtitle && <p className="modal__subtitle">{subtitle}</p>}
           </div>
           {onClose && (
-            <button className="key key--sm key--ghost" onClick={onClose} aria-label="Close" style={{ minHeight: 36 }}>
+            <button className="key key--sm key--ghost" onClick={onClose} aria-label="Cerrar" style={{ minHeight: 36 }}>
               <X size={18} />
             </button>
           )}

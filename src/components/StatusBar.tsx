@@ -10,6 +10,7 @@ import { useUI } from '../state/ui';
 import { pos } from '../state/pos';
 import { openCustomerDisplayWindow } from '../hardware/customerDisplay';
 import { emit } from '../state/pos';
+import { ROLE_LABEL } from '../core/format';
 
 export default function StatusBar() {
   const employee = useSession((s) => s.employee);
@@ -40,47 +41,47 @@ export default function StatusBar() {
           <div className="avatar">{initials}</div>
           <div>
             <b>{employeeFullName(employee)}</b>
-            <small>{employee.role}</small>
+            <small>{ROLE_LABEL[employee.role] ?? employee.role}</small>
           </div>
         </div>
       )}
       <div className="statusbar__spacer" />
-      <div className="statusbar__status" title={online ? 'Connected to back office' : 'Offline — events are queued and sent when the connection returns'}>
+      <div className="statusbar__status" title={online ? 'Conectado con administración' : 'Sin conexión — los eventos se ponen en cola y se envían cuando vuelve la conexión'}>
         <i className={`dot ${online ? 'dot--on' : 'dot--off'}`} />
-        {online ? 'Back office online' : 'Offline'}
-        {queued > 0 && <span className="chip chip--warn">{queued} queued</span>}
+        {online ? 'Administración en línea' : 'Sin conexión'}
+        {queued > 0 && <span className="chip chip--warn">{queued} en cola</span>}
       </div>
       <div className="statusbar__clock">
-        {now.toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-        <small>{now.toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</small>
+        {now.toLocaleTimeString('es-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        <small>{now.toLocaleDateString('es-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</small>
       </div>
       <div className="statusbar__actions">
         <button
           className="key key--sm"
-          title="Open the customer-facing display (second screen)"
+          title="Abrir la pantalla del cliente (segunda pantalla)"
           onClick={() => {
             openCustomerDisplayWindow();
-            emit('CUSTOMER_DISPLAY', 'Customer display window opened', { opened: true });
+            emit('CUSTOMER_DISPLAY', 'Se abrió la ventana de la pantalla del cliente', { opened: true });
           }}
         >
           <Monitor size={18} />
-          <small>Customer screen</small>
+          <small>Pantalla cliente</small>
         </button>
-        <button className="key key--sm" onClick={() => nav('/reports')} title="Live X report for the current segment">
+        <button className="key key--sm" onClick={() => nav('/reports')} title="Reporte X en vivo del segmento actual">
           <FileBarChart2 size={18} />
-          <small>Reports</small>
+          <small>Reportes</small>
         </button>
-        <button className="key key--sm key--warn" onClick={() => void pos.startBreak()} title="Close the current segment and go on break">
+        <button className="key key--sm key--warn" onClick={() => void pos.startBreak()} title="Cerrar el segmento actual y tomar un descanso">
           <Coffee size={18} />
-          <small>Break</small>
+          <small>Descanso</small>
         </button>
-        <button className="key key--sm" onClick={() => pos.lock()} title="Lock the register">
+        <button className="key key--sm" onClick={() => pos.lock()} title="Bloquear la caja">
           <Lock size={18} />
-          <small>Lock</small>
+          <small>Bloquear</small>
         </button>
         <button className="key key--sm" onClick={() => useUI.getState().openModal({ kind: 'menu' })}>
           <Menu size={18} />
-          <small>Menu</small>
+          <small>Menú</small>
         </button>
       </div>
     </header>

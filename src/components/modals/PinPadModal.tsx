@@ -23,7 +23,7 @@ export default function PinPadModal({ title, subtitle, minRole, resolve }: Props
     setBusy(false);
     if (e) resolve(e);
     else {
-      setError(`Not a valid ${minRole} PIN`);
+      setError(`PIN de ${minRole === 'manager' ? 'gerente' : 'supervisor'} no válido`);
       setPin('');
     }
   };
@@ -31,7 +31,7 @@ export default function PinPadModal({ title, subtitle, minRole, resolve }: Props
     <ModalShell title={<><ShieldCheck size={22} color="#f5b300" /> {title}</>} subtitle={subtitle} onClose={() => resolve(null)}>
       <div className="pin-dots">{[0, 1, 2, 3, 4, 5].map((i) => <i key={i} className={i < pin.length ? 'on' : ''} style={{ display: i >= 4 && pin.length <= 4 ? 'none' : 'block' }} />)}</div>
       <div className="pin-error">{error}</div>
-      <NumPad value={pin} onChange={(v) => { setPin(v); setError(''); }} mode="pin" onEnter={() => void submit()} enterLabel={busy ? 'Checking…' : 'Approve'} />
+      <NumPad value={pin} onChange={(v) => { setPin(v); setError(''); }} mode="pin" onEnter={() => void submit()} enterLabel={busy ? 'Verificando…' : 'Aprobar'} />
     </ModalShell>
   );
 }

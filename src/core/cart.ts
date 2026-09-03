@@ -40,7 +40,7 @@ export function lineFromOpenDepartment(category: Category, amount: number, opts:
     id: uuid(),
     productId: null,
     categoryId: category.id,
-    name: `${category.name} (open item)`,
+    name: `${category.name} (artículo abierto)`,
     plu: null,
     barcode: null,
     unitPrice: round2(amount),

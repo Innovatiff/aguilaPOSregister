@@ -16,7 +16,7 @@ interface Props {
   formatAmount?: (n: number) => string;
 }
 
-export default function NumPad({ value, onChange, mode, onEnter, enterLabel = 'ENTER', hint, autoKeyboard = true, formatAmount }: Props) {
+export default function NumPad({ value, onChange, mode, onEnter, enterLabel = 'ENTRAR', hint, autoKeyboard = true, formatAmount }: Props) {
   const maxLen = mode === 'pin' ? 6 : mode === 'code' ? 14 : 9;
   const press = (k: string) => {
     if (k === '⌫') return onChange(value.slice(0, -1));
@@ -53,7 +53,7 @@ export default function NumPad({ value, onChange, mode, onEnter, enterLabel = 'E
       )}
       <div className="numpad__grid">
         {keys.map((k) => (
-          <button key={k} className={`key ${k === '⌫' || k === 'C' ? 'key--ghost' : ''}`} onClick={() => press(k)} aria-label={k === '⌫' ? 'Backspace' : k}>
+          <button key={k} className={`key ${k === '⌫' || k === 'C' ? 'key--ghost' : ''}`} onClick={() => press(k)} aria-label={k === '⌫' ? 'Retroceso' : k}>
             {k === '⌫' ? <Delete size={22} /> : k}
           </button>
         ))}

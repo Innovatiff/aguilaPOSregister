@@ -37,7 +37,7 @@ function markOnline(online: boolean, error: string | null = null) {
     const { registerId } = useSettings.getState();
     const shift = currentShift();
     const s = useSession.getState();
-    const ev = makeEvent(online ? 'REGISTER_ONLINE' : 'REGISTER_OFFLINE', online ? 'Register reconnected to back office' : `Register lost connection${error ? `: ${error}` : ''}`, { error }, {
+    const ev = makeEvent(online ? 'REGISTER_ONLINE' : 'REGISTER_OFFLINE', online ? 'La caja se reconectó con administración' : `La caja perdió la conexión${error ? `: ${error}` : ''}`, { error }, {
       registerId,
       employeeId: s.employee?.id ?? null,
       employeeName: s.employee ? `${s.employee.firstName} ${s.employee.lastName}` : null,

@@ -27,10 +27,10 @@ export function receiptText(txn: Transaction, store: StoreInfo, opts: { reprint?
   const hst = store.taxes.find((t) => t.id === 'hst');
   if (hst?.registration) out.push(center(hst.registration));
   out.push(rule);
-  if (opts.reprint) out.push(center('*** DUPLICATE RECEIPT ***'));
-  if (txn.kind !== 'sale') out.push(center(txn.kind === 'return' ? '*** RETURN ***' : '*** SALE WITH RETURN ***'));
-  out.push(pad(`Receipt ${txn.number}`, fmtDateTime(txn.completedAt ?? txn.startedAt)));
-  out.push(pad(`Cashier: ${txn.employeeName}`, `Reg ${txn.registerId}`));
+  if (opts.reprint) out.push(center('*** COPIA DE RECIBO ***'));
+  if (txn.kind !== 'sale') out.push(center(txn.kind === 'return' ? '*** DEVOLUCIÓN ***' : '*** VENTA CON DEVOLUCIÓN ***'));
+  out.push(pad(`Recibo ${txn.number}`, fmtDateTime(txn.completedAt ?? txn.startedAt)));
+  out.push(pad(`Cajero/a: ${txn.employeeName}`, `Caja ${txn.registerId}`));
   out.push(rule);
   for (const l of txn.lines) {
     if (l.voided) continue;
@@ -43,25 +43,25 @@ export function receiptText(txn: Transaction, store: StoreInfo, opts: { reprint?
       out.push(l.name.slice(0, W));
       out.push(pad(`  ${l.qty} @ ${fixed2(l.unitPrice)}`, fixed2(c.gross) + flag));
     } else {
-      out.push(pad((l.isReturn ? 'RETURN ' : '') + l.name, fixed2(c.gross) + flag));
+      out.push(pad((l.isReturn ? 'DEVOLUCIÓN ' : '') + l.name, fixed2(c.gross) + flag));
     }
-    if (l.priceOverride) out.push(pad(`  price changed from ${fixed2(l.priceOverride.from)}`, ''));
-    if (l.discount) out.push(pad(`  Discount ${l.discount.type === 'percent' ? `${l.discount.value}%` : ''} (${l.discount.reason})`, `-${fixed2(c.discount)}`));
+    if (l.priceOverride) out.push(pad(`  precio anterior ${fixed2(l.priceOverride.from)}`, ''));
+    if (l.discount) out.push(pad(`  Descuento ${l.discount.type === 'percent' ? `${l.discount.value}%` : ''} (${l.discount.reason})`, `-${fixed2(c.discount)}`));
   }
   out.push(rule);
   out.push(pad('SUBTOTAL', fixed2(txn.totals.subtotal)));
-  if (txn.totals.txnDiscount) out.push(pad(`DISCOUNT (${txn.txnDiscount?.reason ?? ''})`, `-${fixed2(txn.totals.txnDiscount)}`));
+  if (txn.totals.txnDiscount) out.push(pad(`DESCUENTO (${txn.txnDiscount?.reason ?? ''})`, `-${fixed2(txn.totals.txnDiscount)}`));
   out.push(pad(`HST 13%`, fixed2(txn.totals.tax)));
   out.push(pad('TOTAL', fixed2(txn.totals.total)));
   out.push(rule);
   for (const t of txn.tenders) {
     const label = TENDER_LABEL[t.type] ?? t.type;
     out.push(pad(label.toUpperCase() + (t.cardLast4 ? ` ****${t.cardLast4}` : ''), fixed2(t.amount)));
-    if (t.ref) out.push(pad(`  Auth ${t.ref}`, ''));
+    if (t.ref) out.push(pad(`  Aut. ${t.ref}`, ''));
   }
-  if (txn.changeDue > 0) out.push(pad('CHANGE', fixed2(txn.changeDue)));
+  if (txn.changeDue > 0) out.push(pad('CAMBIO', fixed2(txn.changeDue)));
   out.push(rule);
-  out.push(pad(`Items: ${txn.totals.itemCount}`, `H = HST 13%`));
+  out.push(pad(`Artículos: ${txn.totals.itemCount}`, `H = HST 13%`));
   out.push('');
   if (store.receiptHeader) out.push(center(store.receiptHeader));
   if (store.receiptFooter) for (const line of wrap(store.receiptFooter, W)) out.push(center(line));
@@ -85,7 +85,7 @@ function wrap(s: string, width: number): string[] {
 }
 
 /** Sends the receipt to the browser print dialog (thermal driver in production). */
-export function printText(text: string, title = 'Receipt') {
+export function printText(text: string, title = 'Recibo') {
   const iframe = document.createElement('iframe');
   iframe.style.position = 'fixed';
   iframe.style.right = '0';

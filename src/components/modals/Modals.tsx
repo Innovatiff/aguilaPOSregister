@@ -53,7 +53,7 @@ export default function Modals() {
     case 'menu':
       return <MenuModal />;
     case 'open-dept':
-      return <ConfirmModal title={`${modal.category.name} open item`} message={`Add an open item of ${modal.amount.toFixed(2)} to ${modal.category.name}?`} resolve={modal.resolve} />;
+      return <ConfirmModal title={`Artículo abierto de ${modal.category.name}`} message={`¿Agregar un artículo abierto de ${modal.amount.toFixed(2)} a ${modal.category.name}?`} resolve={modal.resolve} />;
     case 'break-confirm':
       return null;
     default:

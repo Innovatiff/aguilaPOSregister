@@ -11,19 +11,19 @@ export default function ClosingReportModal({ report, mode, onConfirm }: { report
   return (
     <ModalShell
       size="xl"
-      title={mode === 'break' ? <><Coffee size={22} color="#f5b300" /> Review your segment before the break</> : mode === 'shift' ? 'Shift closed' : 'Closing report'}
-      subtitle={mode === 'break' ? 'This report is sent to the back office the moment you confirm. Nothing else is required.' : mode === 'shift' ? 'The Z report and your drawer count were sent to the back office. Thank you!' : undefined}
+      title={mode === 'break' ? <><Coffee size={22} color="#f5b300" /> Revise su segmento antes del descanso</> : mode === 'shift' ? 'Turno cerrado' : 'Reporte de cierre'}
+      subtitle={mode === 'break' ? 'Este reporte se envía a administración en cuanto confirme. No se requiere nada más.' : mode === 'shift' ? 'El reporte Z y su conteo del cajón se enviaron a administración. ¡Gracias!' : undefined}
       onClose={mode === 'break' ? close : close}
     >
       <ClosingReport report={report} closing={mode === 'shift' && closing ? closing : null} />
       <div className="modal__actions">
         {mode === 'break' ? (
           <>
-            <button className="key key--ghost" onClick={close}>Not now</button>
-            <button className="key key--warn key--lg" onClick={onConfirm}><Coffee size={18} /> Confirm & start break</button>
+            <button className="key key--ghost" onClick={close}>Ahora no</button>
+            <button className="key key--warn key--lg" onClick={onConfirm}><Coffee size={18} /> Confirmar e iniciar descanso</button>
           </>
         ) : (
-          <button className="key key--accent" onClick={close}>Done</button>
+          <button className="key key--accent" onClick={close}>Listo</button>
         )}
       </div>
     </ModalShell>

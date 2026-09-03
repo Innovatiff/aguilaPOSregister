@@ -13,11 +13,12 @@ export function sum(values: number[]): number {
 
 const formatters = new Map<string, Intl.NumberFormat>();
 
-export function formatMoney(n: number, locale = 'en-CA', currency = 'CAD'): string {
+// Spanish (US) number formatting with the plain "$" sign for the store's currency (CAD by default).
+export function formatMoney(n: number, locale = 'es-US', currency = 'CAD'): string {
   const key = `${locale}|${currency}`;
   let f = formatters.get(key);
   if (!f) {
-    f = new Intl.NumberFormat(locale, { style: 'currency', currency });
+    f = new Intl.NumberFormat(locale, { style: 'currency', currency, currencyDisplay: 'narrowSymbol' });
     formatters.set(key, f);
   }
   return f.format(n);

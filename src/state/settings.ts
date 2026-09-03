@@ -32,7 +32,7 @@ const defaults: RegisterSettings = {
   apiBaseUrl: env.VITE_API_BASE_URL?.replace(/\/$/, '') || 'http://localhost:4000',
   registerKey: env.VITE_REGISTER_KEY || 'demo-register-key',
   registerId: env.VITE_REGISTER_ID || 'REG-01',
-  registerName: env.VITE_REGISTER_NAME || 'Front Register',
+  registerName: env.VITE_REGISTER_NAME || 'Caja principal',
   terminalMode: 'simulated',
   terminalAutoApprove: false,
   customerDisplayEnabled: true,

@@ -9,7 +9,7 @@ import { useSync } from '../sync/queue';
 import { useCatalog } from '../state/catalog';
 import { pos } from '../state/pos';
 import { openCustomerDisplayWindow } from '../hardware/customerDisplay';
-import { fmtTime, elapsedSince } from '../core/format';
+import { fmtTime, elapsedSince, plural } from '../core/format';
 
 export default function LoginPage() {
   const status = useSession((s) => s.status);
@@ -33,7 +33,7 @@ export default function LoginPage() {
     const r = await pos.signInWithPin(pin);
     setBusy(false);
     setPin('');
-    if (!r.ok) setError(r.error ?? 'Try again');
+    if (!r.ok) setError(r.error ?? 'Intente de nuevo');
   };
 
   return (
@@ -50,37 +50,37 @@ export default function LoginPage() {
         </div>
         <div className="login__hero">
           <h2>
-            Fast at the till.
+            Rápido en la caja.
             <br />
-            Accountable in the back office.
+            Transparente para la administración.
           </h2>
           <p>
-            Every sale, void, discount, no-sale and break is recorded and streamed to the manager’s dashboard. When an associate goes on break, their segment closes automatically with a full report.
+            Cada venta, anulación, descuento, apertura de cajón y descanso se registra y se envía en tiempo real al panel del gerente. Cuando un asociado toma un descanso, su segmento se cierra automáticamente con un reporte completo.
           </p>
           <div className="login__facts">
             <div className="card">
-              <b>{categories.length} departments</b>
-              <span>same keys as today: amount + category</span>
+              <b>{plural(categories.length, 'departamento')}</b>
+              <span>las mismas teclas de siempre: monto + categoría</span>
             </div>
             <div className="card">
-              <b>{products.length} items</b>
-              <span>barcodes, PLU & scale labels</span>
+              <b>{plural(products.length, 'artículo')}</b>
+              <span>códigos de barras, PLU y etiquetas de báscula</span>
             </div>
             <div className="card">
-              <b>HST-aware</b>
-              <span>groceries zero-rated, taxed items flagged</span>
+              <b>Compatible con HST</b>
+              <span>abarrotes sin impuesto, artículos gravados marcados</span>
             </div>
           </div>
         </div>
         <div className="login__foot">
           <span>
-            {online ? <Wifi size={14} /> : <WifiOff size={14} />} {online ? 'Connected to back office' : 'Offline — working locally'}
-            {queued > 0 && ` · ${queued} events queued`} · {registerId} {registerName}
+            {online ? <Wifi size={14} /> : <WifiOff size={14} />} {online ? 'Conectado con administración' : 'Sin conexión — trabajando localmente'}
+            {queued > 0 && ` · ${plural(queued, 'evento')} en cola`} · {registerId} {registerName}
           </span>
           <span style={{ display: 'flex', gap: 6 }}>
-            <button className="key key--sm key--ghost" onClick={() => openCustomerDisplayWindow()}><Monitor size={14} /> Customer screen</button>
-            <button className="key key--sm key--ghost" onClick={() => nav('/settings')}><Settings size={14} /> Settings</button>
-            <button className="key key--sm key--ghost" onClick={() => nav('/about')}><Info size={14} /> About</button>
+            <button className="key key--sm key--ghost" onClick={() => openCustomerDisplayWindow()}><Monitor size={14} /> Pantalla del cliente</button>
+            <button className="key key--sm key--ghost" onClick={() => nav('/settings')}><Settings size={14} /> Configuración</button>
+            <button className="key key--sm key--ghost" onClick={() => nav('/about')}><Info size={14} /> Acerca de</button>
           </span>
         </div>
       </aside>
@@ -88,13 +88,13 @@ export default function LoginPage() {
         <div className="login__card">
           {status === 'locked' && lockedBy ? (
             <>
-              <h3><Lock size={18} style={{ verticalAlign: -3 }} /> Register locked</h3>
-              <p className="sub">Locked by {lockedBy.firstName} {lockedBy.lastName}. Enter their PIN, or a supervisor PIN, to unlock.</p>
+              <h3><Lock size={18} style={{ verticalAlign: -3 }} /> Caja bloqueada</h3>
+              <p className="sub">Bloqueada por {lockedBy.firstName} {lockedBy.lastName}. Ingrese su PIN, o el PIN de un supervisor, para desbloquear.</p>
             </>
           ) : (
             <>
-              <h3><ShieldCheck size={18} style={{ verticalAlign: -3 }} /> Associate sign-in</h3>
-              <p className="sub">Enter your PIN to start a shift{onBreak.length ? ' or return from break' : ''}.</p>
+              <h3><ShieldCheck size={18} style={{ verticalAlign: -3 }} /> Inicio de sesión del asociado</h3>
+              <p className="sub">Ingrese su PIN para iniciar un turno{onBreak.length ? ' o regresar del descanso' : ''}.</p>
             </>
           )}
           {onBreak.length > 0 && (
@@ -105,8 +105,8 @@ export default function LoginPage() {
                   <div className="break-item" key={s.id}>
                     <Coffee size={20} color="#f5b300" />
                     <div style={{ flex: 1 }}>
-                      <b>{s.employeeName} is on break</b>
-                      <span>since {fmtTime(seg?.endedAt)} · {seg?.endedAt ? elapsedSince(seg.endedAt) : ''} · enter PIN to resume</span>
+                      <b>{s.employeeName} está en descanso</b>
+                      <span>desde {fmtTime(seg?.endedAt)} · {seg?.endedAt ? elapsedSince(seg.endedAt) : ''} · ingrese el PIN para continuar</span>
                     </div>
                   </div>
                 );
@@ -115,11 +115,11 @@ export default function LoginPage() {
           )}
           <div className="pin-dots">{[0, 1, 2, 3, 4, 5].map((i) => <i key={i} className={i < pin.length ? 'on' : ''} style={{ display: i >= 4 && pin.length <= 4 ? 'none' : 'block' }} />)}</div>
           <div className="pin-error">{error}</div>
-          <NumPad value={pin} onChange={(v) => { setPin(v); setError(''); }} mode="pin" onEnter={() => void submit()} enterLabel={busy ? 'Checking…' : 'Sign in'} />
+          <NumPad value={pin} onChange={(v) => { setPin(v); setError(''); }} mode="pin" onEnter={() => void submit()} enterLabel={busy ? 'Verificando…' : 'Iniciar sesión'} />
           <details className="demo-hint">
-            <summary>Demo accounts</summary>
+            <summary>Cuentas de demostración</summary>
             <div style={{ marginTop: 6 }}>
-              Cashiers: María <code>1234</code>, José <code>2468</code>, Ana <code>1357</code>, Carlos <code>4321</code> · Supervisor Luis <code>5150</code> · Manager <code>9999</code>
+              Cajeros: María <code>1234</code>, José <code>2468</code>, Ana <code>1357</code>, Carlos <code>4321</code> · Supervisor Luis <code>5150</code> · Gerente <code>9999</code>
             </div>
           </details>
         </div>

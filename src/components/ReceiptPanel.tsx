@@ -6,7 +6,7 @@ import { pos } from '../state/pos';
 import { computeLine } from '../core/tax';
 import { formatMoney, fixed2 } from '../core/money';
 import { balanceDue, tendered } from '../core/cart';
-import { fmtTime, TENDER_LABEL } from '../core/format';
+import { fmtTime, plural, TENDER_LABEL } from '../core/format';
 
 export default function ReceiptPanel() {
   const txn = useCart((s) => s.txn);
@@ -26,22 +26,22 @@ export default function ReceiptPanel() {
         <b>{store.name.toUpperCase()}</b>
         {store.address1}, {store.city} {store.province} {store.postalCode}
         <div className="row">
-          <span>{txn ? `Receipt ${txn.number}` : `Register ${registerId}`}</span>
-          <span>{txn ? fmtTime(txn.startedAt) : 'Ready'}</span>
+          <span>{txn ? `Recibo ${txn.number}` : `Caja ${registerId}`}</span>
+          <span>{txn ? fmtTime(txn.startedAt) : 'Lista'}</span>
         </div>
       </div>
       <div className="receipt__lines">
         {!txn || txn.lines.length === 0 ? (
           <div className="receipt__empty">
             <ScanBarcode size={42} color="#8f9cbb" />
-            <h3>Ready for the next customer</h3>
-            <p>Scan an item, type a PLU + ENTER, or tap a category. Type an amount then a category key for open items.</p>
+            <h3>Lista para el siguiente cliente</h3>
+            <p>Escanee un artículo, escriba un PLU + ENTRAR o toque una categoría. Escriba un monto y luego una tecla de categoría para artículos abiertos.</p>
             {last && (
               <div className="last">
-                LAST SALE {last.number} · {fmtTime(last.completedAt)}
+                ÚLTIMA VENTA {last.number} · {fmtTime(last.completedAt)}
                 <br />
-                {last.totals.itemCount} items · TOTAL {fixed2(last.totals.total)}
-                {last.changeDue > 0 && <> · CHANGE {fixed2(last.changeDue)}</>}
+                {plural(last.totals.itemCount, 'artículo')} · TOTAL {fixed2(last.totals.total)}
+                {last.changeDue > 0 && <> · CAMBIO {fixed2(last.changeDue)}</>}
               </div>
             )}
           </div>
@@ -55,7 +55,7 @@ export default function ReceiptPanel() {
                 onClick={() => !l.voided && pos.selectLine(selected === l.id ? null : l.id)}
               >
                 <div className="receipt__name">
-                  {l.isReturn ? 'RETURN ' : ''}
+                  {l.isReturn ? 'DEVOLUCIÓN ' : ''}
                   {l.name}
                 </div>
                 <div className="receipt__amt">{fixed2(c.extended)}</div>
@@ -63,12 +63,12 @@ export default function ReceiptPanel() {
                   <span>
                     {l.unit === 'kg' ? `${l.qty.toFixed(3)} kg @ ${fixed2(l.unitPrice)}/kg` : `${l.qty} @ ${fixed2(l.unitPrice)}`}
                     {l.taxable ? ' · H' : ''}
-                    {l.scanned ? ' · scanned' : ''}
+                    {l.scanned ? ' · escaneado' : ''}
                   </span>
                   <span className="tag">
-                    {l.priceOverride && `price was ${fixed2(l.priceOverride.from)} `}
+                    {l.priceOverride && `precio anterior ${fixed2(l.priceOverride.from)} `}
                     {l.discount && `-${l.discount.type === 'percent' ? `${l.discount.value}%` : fixed2(l.discount.value)} ${l.discount.reason}`}
-                    {l.voided && `VOID: ${l.voidReason ?? ''}`}
+                    {l.voided && `ANULADO: ${l.voidReason ?? ''}`}
                   </span>
                 </div>
               </div>
@@ -80,18 +80,18 @@ export default function ReceiptPanel() {
         {txn && (
           <>
             <div className="row">
-              <span>Subtotal ({txn.totals.itemCount} items{txn.totals.returnCount ? `, ${txn.totals.returnCount} returned` : ''})</span>
+              <span>Subtotal ({plural(txn.totals.itemCount, 'artículo')}{txn.totals.returnCount ? `, ${txn.totals.returnCount} en devolución` : ''})</span>
               <b>{fixed2(txn.totals.subtotal)}</b>
             </div>
             {txn.totals.lineDiscounts > 0 && (
               <div className="row discount">
-                <span>Item discounts included</span>
+                <span>Descuentos en artículos incluidos</span>
                 <span>-{fixed2(txn.totals.lineDiscounts)}</span>
               </div>
             )}
             {txn.totals.txnDiscount > 0 && (
               <div className="row discount">
-                <span>Sale discount ({txn.txnDiscount?.reason})</span>
+                <span>Descuento en venta ({txn.txnDiscount?.reason})</span>
                 <span>-{fixed2(txn.totals.txnDiscount)}</span>
               </div>
             )}
@@ -107,14 +107,14 @@ export default function ReceiptPanel() {
                   {t.ref && t.ref !== 'MANUAL' ? ` · ${t.ref}` : ''}
                 </span>
                 <span>
-                  {fixed2(t.amount)} {t.type === 'cash' || t.ref === 'MANUAL' || !t.ref ? <button onClick={() => pos.removeTender(t.id)}>remove</button> : null}
+                  {fixed2(t.amount)} {t.type === 'cash' || t.ref === 'MANUAL' || !t.ref ? <button onClick={() => pos.removeTender(t.id)}>quitar</button> : null}
                 </span>
               </div>
             ))}
           </>
         )}
         <div className={`total-big ${txn && paid > 0 && due <= 0 ? 'is-change' : txn && paid > 0 ? 'is-due' : isRefund ? 'is-refund' : ''}`}>
-          <span>{txn && paid > 0 ? (due <= 0 ? 'Change' : 'Balance due') : isRefund ? 'Refund' : 'Total'}</span>
+          <span>{txn && paid > 0 ? (due <= 0 ? 'Cambio' : 'Saldo pendiente') : isRefund ? 'Reembolso' : 'Total'}</span>
           <b>{txn ? money(paid > 0 ? Math.abs(due) : Math.abs(txn.totals.total)) : money(0)}</b>
         </div>
       </div>

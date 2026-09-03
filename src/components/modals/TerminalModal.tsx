@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CreditCard, Wifi } from 'lucide-react';
 import ModalShell from './ModalShell';
-import { getTerminal, type TerminalPhase } from '../../hardware/terminal';
+import { getTerminal, TERMINAL_PHASE_LABEL, type TerminalPhase } from '../../hardware/terminal';
 import { useSettings } from '../../state/settings';
 import { useCatalog } from '../../state/catalog';
 import { formatMoney } from '../../core/money';
@@ -18,7 +18,7 @@ export default function TerminalModal({ amount, tenderType }: { amount: number; 
   const money = (n: number) => formatMoney(n, store.locale, store.currency);
   const waiting = phase === 'connecting' || phase === 'waiting_for_card' || phase === 'processing';
   return (
-    <ModalShell title={<><CreditCard size={22} color="#38bdf8" /> {TENDER_LABEL[tenderType]} — {amount < 0 ? 'refund' : 'payment'}</>} subtitle={`${terminalMode === 'simulated' ? 'Simulated terminal' : terminalMode} · semi-integrated: the amount is sent to the PIN pad, the customer completes the payment there.`}>
+    <ModalShell title={<><CreditCard size={22} color="#38bdf8" /> {TENDER_LABEL[tenderType]} — {amount < 0 ? 'reembolso' : 'pago'}</>} subtitle={`${terminalMode === 'simulated' ? 'Terminal simulada' : terminalMode} · semi-integrada: el monto se envía al PIN pad y el cliente completa el pago ahí.`}>
       <div className="terminal">
         <div className="terminal__amount">{money(Math.abs(amount))}</div>
         <div className="terminal__device">
@@ -27,23 +27,23 @@ export default function TerminalModal({ amount, tenderType }: { amount: number; 
             <Wifi size={12} />
           </div>
           <div className="terminal__screen">
-            {phase === 'connecting' && 'CONNECTING…'}
-            {phase === 'waiting_for_card' && `PURCHASE ${money(Math.abs(amount))}\n\nTAP / INSERT / SWIPE\nCARD`}
-            {phase === 'processing' && 'PROCESSING\nPLEASE WAIT…'}
-            {phase === 'approved' && `APPROVED\n${detail.replace('APPROVED  ', '')}`}
-            {phase === 'declined' && 'DECLINED'}
-            {phase === 'cancelled' && 'CANCELLED'}
-            {phase === 'idle' && 'READY'}
+            {phase === 'connecting' && 'CONECTANDO…'}
+            {phase === 'waiting_for_card' && `COMPRA ${money(Math.abs(amount))}\n\nACERQUE / INSERTE / DESLICE\nLA TARJETA`}
+            {phase === 'processing' && 'PROCESANDO\nESPERE POR FAVOR…'}
+            {phase === 'approved' && `APROBADO\n${detail.replace('APROBADO  ', '')}`}
+            {phase === 'declined' && 'RECHAZADO'}
+            {phase === 'cancelled' && 'CANCELADO'}
+            {phase === 'idle' && 'LISTO'}
           </div>
         </div>
-        <div className={`terminal__phase ${phase} ${waiting ? 'pulse' : ''}`}>{detail || phase.replace('_', ' ')}</div>
+        <div className={`terminal__phase ${phase} ${waiting ? 'pulse' : ''}`}>{detail || (TERMINAL_PHASE_LABEL[phase] ?? phase)}</div>
       </div>
       <div className="modal__actions" style={{ justifyContent: 'center' }}>
-        {waiting && <button className="key key--ghost" onClick={() => terminal.cancel()}>Cancel</button>}
+        {waiting && <button className="key key--ghost" onClick={() => terminal.cancel()}>Cancelar</button>}
         {terminalMode === 'simulated' && phase === 'waiting_for_card' && (
           <>
-            <button className="key key--danger" onClick={() => terminal.simulateDecline()}>Simulate decline</button>
-            <button className="key key--success" onClick={() => terminal.simulateTap()}>Simulate customer tap</button>
+            <button className="key key--danger" onClick={() => terminal.simulateDecline()}>Simular rechazo</button>
+            <button className="key key--success" onClick={() => terminal.simulateTap()}>Simular tarjeta del cliente</button>
           </>
         )}
       </div>

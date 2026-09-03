@@ -5,22 +5,22 @@ export default function TenderPanel() {
   return (
     <section className="tenders">
       <div className="row2">
-        <button className="key key--success" onClick={() => pos.tenderCash(5)}>$5 Cash</button>
-        <button className="key key--success" onClick={() => pos.tenderCash(10)}>$10 Cash</button>
+        <button className="key key--success" onClick={() => pos.tenderCash(5)}>$5 Efectivo</button>
+        <button className="key key--success" onClick={() => pos.tenderCash(10)}>$10 Efectivo</button>
       </div>
       <div className="row2">
-        <button className="key key--success" onClick={() => pos.tenderCash(20)}>$20 Cash</button>
-        <button className="key key--success" onClick={() => pos.tenderCash(50)}>$50 Cash</button>
+        <button className="key key--success" onClick={() => pos.tenderCash(20)}>$20 Efectivo</button>
+        <button className="key key--success" onClick={() => pos.tenderCash(50)}>$50 Efectivo</button>
       </div>
       <div className="row2">
-        <button className="key key--success" onClick={() => pos.tenderCash(100)}>$100 Cash</button>
-        <button className="key key--success" onClick={() => pos.tenderCash()} title="Exact amount, or the amount typed on the keypad">
-          <Banknote size={18} /> Cash
-          <small>exact / typed</small>
+        <button className="key key--success" onClick={() => pos.tenderCash(100)}>$100 Efectivo</button>
+        <button className="key key--success" onClick={() => pos.tenderCash()} title="Monto exacto, o el monto escrito en el teclado">
+          <Banknote size={18} /> Efectivo
+          <small>exacto / escrito</small>
         </button>
       </div>
       <button className="key key--info key--lg" onClick={() => void pos.tenderCard('debit')}>
-        <Landmark size={20} /> Interac Debit
+        <Landmark size={20} /> Débito Interac
       </button>
       <div className="row2">
         <button className="key key--info" onClick={() => void pos.tenderCard('visa')}>
@@ -33,10 +33,10 @@ export default function TenderPanel() {
       <div className="row2">
         <button className="key key--sm" onClick={() => void pos.tenderCard('amex')}>Amex</button>
         <button className="key key--sm" onClick={() => void pos.tenderOther('gift')}>
-          <Wallet size={16} /> Gift card
+          <Wallet size={16} /> Tarjeta de regalo
         </button>
       </div>
-      <button className="key key--sm" onClick={() => void pos.tenderOther('cheque')}>Other payments (cheque)</button>
+      <button className="key key--sm" onClick={() => void pos.tenderOther('cheque')}>Otros pagos (cheque)</button>
     </section>
   );
 }

@@ -20,10 +20,10 @@ export default function EndShiftModal() {
   const expected = reveal ? (pos.buildSegmentReportNow()?.cash.expectedInDrawer ?? null) : null;
   const set = (k: string, v: number) => setCounts((c) => ({ ...c, [k]: Math.max(0, v) }));
   return (
-    <ModalShell size="wide" title={<><LogOut size={22} color="#f5b300" /> End shift — count the drawer</>} subtitle="Blind count: enter how many of each you have. The Z report is generated and sent to the back office when you close." onClose={close}>
+    <ModalShell size="wide" title={<><LogOut size={22} color="#f5b300" /> Cerrar turno — cuente el cajón</>} subtitle="Conteo a ciegas: ingrese cuántos tiene de cada uno. El reporte Z se genera y se envía a administración al cerrar." onClose={close}>
       <div className="form-grid">
         <div className="card">
-          <h4>Denominations</h4>
+          <h4>Denominaciones</h4>
           <table className="table">
             <tbody>
               {DENOMS.map(([k, v]) => (
@@ -44,36 +44,36 @@ export default function EndShiftModal() {
         </div>
         <div style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
           <div className="card">
-            <h4>Or enter the total counted</h4>
-            <input className="input" type="number" step="0.01" placeholder="e.g. 612.35" value={manual} onChange={(e) => setManual(e.target.value)} />
+            <h4>O ingrese el total contado</h4>
+            <input className="input" type="number" step="0.01" placeholder="p. ej. 612.35" value={manual} onChange={(e) => setManual(e.target.value)} />
           </div>
           <div className="kpi">
-            <span>Counted cash</span>
+            <span>Efectivo contado</span>
             <b>{money(counted)}</b>
           </div>
           <div className="card">
-            <h4>Expected in drawer</h4>
+            <h4>Esperado en el cajón</h4>
             {expected === null ? (
-              <button className="key key--sm" onClick={() => setReveal(true)}>Reveal expected (supervisor view)</button>
+              <button className="key key--sm" onClick={() => setReveal(true)}>Mostrar esperado (vista de supervisor)</button>
             ) : (
               <div>
                 <b style={{ fontSize: 20 }}>{money(expected)}</b>
                 <div className={`muted`} style={{ color: round2(counted - expected) === 0 ? '#86efac' : '#fca5a5' }}>
-                  {round2(counted - expected) === 0 ? 'Balanced' : `${counted - expected > 0 ? 'Over' : 'Short'} ${money(Math.abs(round2(counted - expected)))}`}
+                  {round2(counted - expected) === 0 ? 'Cuadrado' : `${counted - expected > 0 ? 'Sobrante' : 'Faltante'} ${money(Math.abs(round2(counted - expected)))}`}
                 </div>
               </div>
             )}
           </div>
           <div className="form-row">
-            <label className="label">Notes for the manager</label>
-            <textarea className="textarea" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Anything unusual during the shift…" />
+            <label className="label">Notas para el gerente</label>
+            <textarea className="textarea" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Algo inusual durante el turno…" />
           </div>
         </div>
       </div>
       <div className="modal__actions">
-        <button className="key key--ghost" onClick={close}>Cancel</button>
+        <button className="key key--ghost" onClick={close}>Cancelar</button>
         <button className="key key--danger key--lg" onClick={() => pos.finalizeShift(counted, counts, notes)}>
-          <LogOut size={18} /> Close shift & send Z report
+          <LogOut size={18} /> Cerrar turno y enviar reporte Z
         </button>
       </div>
     </ModalShell>

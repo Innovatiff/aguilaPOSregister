@@ -17,8 +17,8 @@ export function QtyModal({ lineId, resolve }: { lineId: string; resolve: (q: num
   const line = useCart((s) => s.txn?.lines.find((l) => l.id === lineId));
   const [v, setV] = useState('');
   return (
-    <ModalShell title="Quantity" subtitle={line ? `${line.name} — currently ${line.qty}` : undefined} onClose={() => resolve(null)}>
-      <NumPad value={v} onChange={setV} mode="qty" hint="New quantity" onEnter={() => resolve(parseQtyBuffer(v) || null)} enterLabel="Apply quantity" />
+    <ModalShell title="Cantidad" subtitle={line ? `${line.name} — actual ${line.qty}` : undefined} onClose={() => resolve(null)}>
+      <NumPad value={v} onChange={setV} mode="qty" hint="Nueva cantidad" onEnter={() => resolve(parseQtyBuffer(v) || null)} enterLabel="Aplicar cantidad" />
     </ModalShell>
   );
 }
@@ -29,39 +29,39 @@ export function WeightModal({ product, resolve }: { product: Product; resolve: (
   const kg = parseFloat(v) || 0;
   const label = buildPriceEmbedded(product.plu, round3(kg) * product.price);
   return (
-    <ModalShell title={<><Scale size={22} color="#f5b300" /> Weighed item</>} subtitle={`${product.name} — ${money(product.price)} / kg`} onClose={() => resolve(null)}>
+    <ModalShell title={<><Scale size={22} color="#f5b300" /> Artículo por peso</>} subtitle={`${product.name} — ${money(product.price)} / kg`} onClose={() => resolve(null)}>
       <div className="option-list" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
         {[0.25, 0.5, 1, 2].map((q) => (
           <button key={q} className="key key--sm" onClick={() => setV(String(q))}>{q} kg</button>
         ))}
       </div>
-      <NumPad value={v} onChange={setV} mode="weight" hint={kg > 0 ? `= ${money(round3(kg) * product.price)}` : 'Enter the weight from the scale'} onEnter={() => resolve(kg > 0 ? round3(kg) : null)} enterLabel="Add item" />
+      <NumPad value={v} onChange={setV} mode="weight" hint={kg > 0 ? `= ${money(round3(kg) * product.price)}` : 'Ingrese el peso de la báscula'} onEnter={() => resolve(kg > 0 ? round3(kg) : null)} enterLabel="Agregar artículo" />
       <p className="muted" style={{ fontSize: 12, margin: 0 }}>
-        Tip: scale labels (price-embedded barcode, e.g. <span className="mono">{kg > 0 ? label : '2 02001 01250 x'}</span>) can simply be scanned — the register computes the weight automatically.
+        Consejo: las etiquetas de báscula (código de barras con precio incluido, p. ej. <span className="mono">{kg > 0 ? label : '2 02001 01250 x'}</span>) se pueden escanear directamente — la caja calcula el peso automáticamente.
       </p>
     </ModalShell>
   );
 }
 
-const PRICE_REASONS = ['Price match', 'Damaged packaging', 'Shelf tag mismatch', 'Manager special', 'Clearance', 'Other'];
+const PRICE_REASONS = ['Igualar precio', 'Empaque dañado', 'Etiqueta de anaquel distinta', 'Especial del gerente', 'Liquidación', 'Otro'];
 export function PriceModal({ lineId, resolve }: { lineId: string; resolve: (v: { price: number; reason: string } | null) => void }) {
   const money = useMoney();
   const line = useCart((s) => s.txn?.lines.find((l) => l.id === lineId));
   const [v, setV] = useState('');
   const [reason, setReason] = useState(PRICE_REASONS[0]);
   return (
-    <ModalShell title="Change price" subtitle={line ? `${line.name} — current ${money(line.unitPrice)}` : undefined} onClose={() => resolve(null)}>
+    <ModalShell title="Cambiar precio" subtitle={line ? `${line.name} — actual ${money(line.unitPrice)}` : undefined} onClose={() => resolve(null)}>
       <div className="option-list">
         {PRICE_REASONS.map((r) => (
           <button key={r} className={`key key--sm ${reason === r ? 'key--active' : ''}`} onClick={() => setReason(r)}>{r}</button>
         ))}
       </div>
-      <NumPad value={v} onChange={setV} mode="amount" hint="New unit price" formatAmount={money} onEnter={() => { const p = parseAmountBuffer(v); if (p > 0) resolve({ price: p, reason }); }} enterLabel="Apply new price" />
+      <NumPad value={v} onChange={setV} mode="amount" hint="Nuevo precio unitario" formatAmount={money} onEnter={() => { const p = parseAmountBuffer(v); if (p > 0) resolve({ price: p, reason }); }} enterLabel="Aplicar nuevo precio" />
     </ModalShell>
   );
 }
 
-const DISCOUNT_REASONS = ['Manager promo', 'Damaged', 'Employee discount', 'Price match', 'Loyalty / regular customer', 'Near expiry', 'Other'];
+const DISCOUNT_REASONS = ['Promoción del gerente', 'Dañado', 'Descuento de empleado', 'Igualar precio', 'Cliente frecuente', 'Próximo a caducar', 'Otro'];
 export function DiscountModal({ target, mode, lineId, resolve }: { target: 'line' | 'txn'; mode: 'amount' | 'percent'; lineId?: string; resolve: (v: { value: number; reason: string } | null) => void }) {
   const money = useMoney();
   const line = useCart((s) => (lineId ? s.txn?.lines.find((l) => l.id === lineId) : undefined));
@@ -69,7 +69,7 @@ export function DiscountModal({ target, mode, lineId, resolve }: { target: 'line
   const [reason, setReason] = useState(DISCOUNT_REASONS[0]);
   const quick = mode === 'percent' ? [5, 10, 15, 20, 25, 50] : [1, 2, 5, 10];
   return (
-    <ModalShell title={`${mode === 'percent' ? '%' : '$'} discount on ${target === 'line' ? 'item' : 'whole sale'}`} subtitle={line ? line.name : 'Applied to the sale subtotal'} onClose={() => resolve(null)}>
+    <ModalShell title={`Descuento ${mode === 'percent' ? '%' : '$'} en ${target === 'line' ? 'el artículo' : 'toda la venta'}`} subtitle={line ? line.name : 'Se aplica al subtotal de la venta'} onClose={() => resolve(null)}>
       <div className="option-list" style={{ gridTemplateColumns: `repeat(${quick.length}, 1fr)` }}>
         {quick.map((q) => (
           <button key={q} className="key key--sm" onClick={() => setV(mode === 'percent' ? String(q) : String(q * 100))}>{mode === 'percent' ? `${q}%` : money(q)}</button>
@@ -80,7 +80,7 @@ export function DiscountModal({ target, mode, lineId, resolve }: { target: 'line
           <button key={r} className={`key key--sm ${reason === r ? 'key--active' : ''}`} onClick={() => setReason(r)}>{r}</button>
         ))}
       </div>
-      <NumPad value={v} onChange={setV} mode={mode === 'percent' ? 'qty' : 'amount'} hint={mode === 'percent' ? 'Percent off' : 'Amount off'} formatAmount={money} onEnter={() => { const n = mode === 'percent' ? parseQtyBuffer(v) : parseAmountBuffer(v); if (n > 0) resolve({ value: n, reason }); }} enterLabel="Apply discount" />
+      <NumPad value={v} onChange={setV} mode={mode === 'percent' ? 'qty' : 'amount'} hint={mode === 'percent' ? 'Porcentaje de descuento' : 'Monto de descuento'} formatAmount={money} onEnter={() => { const n = mode === 'percent' ? parseQtyBuffer(v) : parseAmountBuffer(v); if (n > 0) resolve({ value: n, reason }); }} enterLabel="Aplicar descuento" />
     </ModalShell>
   );
 }
@@ -98,7 +98,7 @@ export function AmountModal({ title, subtitle, withReason, options, resolve }: {
           ))}
         </div>
       )}
-      <NumPad value={v} onChange={setV} mode="amount" hint="Amount" formatAmount={money} onEnter={() => { const n = parseAmountBuffer(v); if (n > 0) resolve({ amount: n, reason }); }} enterLabel="Confirm" />
+      <NumPad value={v} onChange={setV} mode="amount" hint="Monto" formatAmount={money} onEnter={() => { const n = parseAmountBuffer(v); if (n > 0) resolve({ amount: n, reason }); }} enterLabel="Confirmar" />
     </ModalShell>
   );
 }
@@ -108,13 +108,13 @@ export function OpeningFloatModal({ employee, resolve }: { employee: Employee; r
   const store = useCatalog((s) => s.store);
   const [v, setV] = useState(String(Math.round(store.openingFloat * 100)));
   return (
-    <ModalShell title={`Start shift — ${employee.firstName}`} subtitle="Count the opening float in the drawer. This starts your shift and your first segment." onClose={() => resolve(null)}>
+    <ModalShell title={`Iniciar turno — ${employee.firstName}`} subtitle="Cuente el fondo inicial en el cajón. Esto inicia su turno y su primer segmento." onClose={() => resolve(null)}>
       <div className="option-list" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
         {[100, 150, 200, 300].map((q) => (
           <button key={q} className="key key--sm" onClick={() => setV(String(q * 100))}>{money(q)}</button>
         ))}
       </div>
-      <NumPad value={v} onChange={setV} mode="amount" hint="Opening float" formatAmount={money} onEnter={() => resolve(parseAmountBuffer(v))} enterLabel="Start shift" />
+      <NumPad value={v} onChange={setV} mode="amount" hint="Fondo inicial" formatAmount={money} onEnter={() => resolve(parseAmountBuffer(v))} enterLabel="Iniciar turno" />
     </ModalShell>
   );
 }
