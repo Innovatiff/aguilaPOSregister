@@ -7,8 +7,9 @@ The register is a static site: any static host works. Netlify steps:
    build command (`npm run build`), the publish folder (`dist`), Node 22 and the single-page
    app redirect.
 2. Under **Site settings → Environment variables** add:
-   * `VITE_API_BASE_URL` — the public URL of the back-office API, e.g.
-     `https://aguila-pos-api.onrender.com` (see the deploy guide in the `aguilaPOS` repo).
+   * `VITE_API_BASE_URL` — the public URL of the back office, e.g. `https://aguilapos.netlify.app`
+     when the back office is on Netlify, or `https://aguila-pos-api.onrender.com` on Render
+     (see the deploy guide in the `aguilaPOS` repo).
      Leave it out to run the register stand-alone with the bundled catalog and demo PINs.
    * optionally `VITE_REGISTER_ID` (`REG-01`), `VITE_REGISTER_NAME`, `VITE_REGISTER_KEY`
      (must match the API's `REGISTER_KEY`).
