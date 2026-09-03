@@ -1,0 +1,63 @@
+import type { SegmentReport } from './types';
+import { fixed2 } from './money';
+import { fmtDateTime, fmtDuration, TENDER_LABEL } from './format';
+
+const W = 42;
+const pad = (l: string, r: string) => l.slice(0, W - r.length - 1) + ' '.repeat(Math.max(1, W - Math.min(l.length, W - r.length - 1) - r.length)) + r;
+const center = (s: string) => ' '.repeat(Math.max(0, Math.floor((W - s.length) / 2))) + s;
+const rule = '-'.repeat(W);
+
+/** Printable 80mm version of a segment / shift closing report. */
+export function closingReportText(r: SegmentReport, storeName: string): string {
+  const o: string[] = [];
+  o.push(center(storeName.toUpperCase()));
+  o.push(center(r.scope === 'shift' ? 'SHIFT CLOSING (Z) REPORT' : 'SEGMENT CLOSING REPORT'));
+  o.push(rule);
+  o.push(pad('Associate', r.employeeName));
+  o.push(pad('Register', r.registerId));
+  o.push(pad('From', fmtDateTime(r.startedAt)));
+  o.push(pad('To', fmtDateTime(r.endedAt)));
+  o.push(pad('Duration', fmtDuration(r.durationMin)));
+  o.push(rule);
+  o.push(pad('Transactions', String(r.transactions)));
+  o.push(pad('Items sold', String(r.itemsSold)));
+  o.push(pad('Gross sales', fixed2(r.grossSales)));
+  o.push(pad('Item discounts', `-${fixed2(r.lineDiscounts)}`));
+  o.push(pad('Sale discounts', `-${fixed2(r.txnDiscounts)}`));
+  o.push(pad('Returns', `-${fixed2(r.returns)}`));
+  o.push(pad('Net sales', fixed2(r.netSales)));
+  o.push(pad('HST collected', fixed2(r.tax)));
+  o.push(pad('TOTAL COLLECTED', fixed2(r.total)));
+  o.push(pad('Average basket', fixed2(r.averageBasket)));
+  o.push(rule);
+  o.push(center('TENDERS'));
+  for (const [k, v] of Object.entries(r.tenders)) if (v) o.push(pad(`${TENDER_LABEL[k] ?? k} (${v.count})`, fixed2(v.amount)));
+  o.push(rule);
+  o.push(center('CASH DRAWER'));
+  o.push(pad('Opening float', fixed2(r.cash.openingFloat)));
+  o.push(pad('Cash tendered', fixed2(r.cash.cashTendered)));
+  o.push(pad('Change given', `-${fixed2(r.cash.changeGiven)}`));
+  o.push(pad('Cash refunds', `-${fixed2(r.cash.cashRefunds)}`));
+  o.push(pad('Cash drops', `-${fixed2(r.cash.drops)}`));
+  o.push(pad('Paid outs', `-${fixed2(r.cash.paidOuts)}`));
+  o.push(pad('EXPECTED IN DRAWER', fixed2(r.cash.expectedInDrawer)));
+  o.push(rule);
+  o.push(center('ACTIVITY'));
+  o.push(pad('Voided items', `${r.voids.lines} (${fixed2(r.voids.linesValue)})`));
+  o.push(pad('Voided sales', `${r.voids.transactions} (${fixed2(r.voids.transactionsValue)})`));
+  o.push(pad('No sales (drawer)', String(r.noSales)));
+  o.push(pad('Price overrides', String(r.priceOverrides)));
+  o.push(pad('Discounts applied', String(r.discountsApplied)));
+  o.push(pad('Manager approvals', String(r.managerOverrides)));
+  o.push(pad('Unknown scans', String(r.scanUnknown)));
+  o.push(pad('Sales held', String(r.holds)));
+  o.push(rule);
+  o.push(center('SALES BY CATEGORY'));
+  for (const c of r.byCategory) o.push(pad(`${c.name} (${c.qty})`, fixed2(c.amount)));
+  o.push(rule);
+  o.push(center('TOP ITEMS'));
+  for (const t of r.topItems.slice(0, 8)) o.push(pad(`${t.qty}x ${t.name}`, fixed2(t.amount)));
+  o.push(rule);
+  o.push(center(`Printed ${fmtDateTime(new Date().toISOString())}`));
+  return o.join('\n');
+}

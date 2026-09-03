@@ -1,0 +1,54 @@
+{
+  "store": {
+    "name": "El Aguila Market",
+    "legalName": "El Aguila Market Inc.",
+    "address1": "42 Erie St S",
+    "city": "Leamington",
+    "province": "ON",
+    "postalCode": "N8H 3A9",
+    "country": "Canada",
+    "phone": "519-322-4222",
+    "email": "pleaguila@gmail.com",
+    "currency": "CAD",
+    "locale": "en-CA",
+    "timezone": "America/Toronto",
+    "taxes": [
+      {
+        "id": "hst",
+        "name": "HST",
+        "rate": 0.13,
+        "registration": "HST # 000000000 RT0001"
+      }
+    ],
+    "receiptHeader": "Thank you for shopping at El Aguila Market!",
+    "receiptFooter": "Returns within 14 days with receipt. Gracias por su compra.",
+    "openingFloat": 200,
+    "managerApprovalThreshold": 50
+  },
+  "registers": [
+    {
+      "id": "REG-01",
+      "name": "Front Register",
+      "location": "Checkout 1",
+      "hardware": {
+        "terminal": "Moneris / Interac (semi-integrated)",
+        "customerDisplay": "Secondary 15\" screen",
+        "scanner": "USB barcode scanner (keyboard wedge)",
+        "printer": "Thermal 80mm",
+        "drawer": "Printer-driven (RJ12)"
+      }
+    },
+    {
+      "id": "REG-02",
+      "name": "Second Register",
+      "location": "Checkout 2",
+      "hardware": {
+        "terminal": "Moneris / Interac (semi-integrated)",
+        "customerDisplay": "Secondary 15\" screen",
+        "scanner": "USB barcode scanner (keyboard wedge)",
+        "printer": "Thermal 80mm",
+        "drawer": "Printer-driven (RJ12)"
+      }
+    }
+  ]
+}

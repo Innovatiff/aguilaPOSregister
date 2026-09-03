@@ -1,0 +1,68 @@
+[
+  {
+    "id": "e-001",
+    "firstName": "Patricia",
+    "lastName": "Demo-Manager",
+    "role": "manager",
+    "username": "manager",
+    "pin": "9999",
+    "password": "Aguila2026!",
+    "active": true,
+    "hiredAt": "2019-03-04"
+  },
+  {
+    "id": "e-002",
+    "firstName": "Luis",
+    "lastName": "Hernández",
+    "role": "supervisor",
+    "username": "luis",
+    "pin": "5150",
+    "password": "Aguila2026!",
+    "active": true,
+    "hiredAt": "2021-06-14"
+  },
+  {
+    "id": "e-003",
+    "firstName": "María",
+    "lastName": "López",
+    "role": "cashier",
+    "username": "maria",
+    "pin": "1234",
+    "password": null,
+    "active": true,
+    "hiredAt": "2022-09-01"
+  },
+  {
+    "id": "e-004",
+    "firstName": "José",
+    "lastName": "Ramírez",
+    "role": "cashier",
+    "username": "jose",
+    "pin": "2468",
+    "password": null,
+    "active": true,
+    "hiredAt": "2023-02-20"
+  },
+  {
+    "id": "e-005",
+    "firstName": "Ana",
+    "lastName": "Torres",
+    "role": "cashier",
+    "username": "ana",
+    "pin": "1357",
+    "password": null,
+    "active": true,
+    "hiredAt": "2024-05-11"
+  },
+  {
+    "id": "e-006",
+    "firstName": "Carlos",
+    "lastName": "Mendoza",
+    "role": "cashier",
+    "username": "carlos",
+    "pin": "4321",
+    "password": null,
+    "active": true,
+    "hiredAt": "2025-01-08"
+  }
+]
