@@ -60,6 +60,12 @@ The register works without the back office too (bundled catalog and demo PINs); 
 the server is reachable. Settings → *Back office connection* to change the API URL, register ID or
 device key.
 
+## Deploy
+
+The register is a static site. `netlify.toml` is included: import the repo in Netlify, set
+`VITE_API_BASE_URL` to the back-office API URL and deploy. Details in
+[`docs/DEPLOY.md`](docs/DEPLOY.md).
+
 ## Demo PINs
 
 Cashiers: María **1234**, José **2468**, Ana **1357**, Carlos **4321** · Supervisor Luis **5150** ·

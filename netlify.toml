@@ -1,0 +1,16 @@
+# Netlify configuration for the El Aguila register (static single-page app).
+# Set VITE_API_BASE_URL in Site settings → Environment variables to the URL of the
+# back-office API (for example https://aguila-pos-api.onrender.com). Without it the
+# register runs stand-alone with the bundled catalog and queues events locally.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: every route (/customer, /settings, /reports, /about) is served by index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

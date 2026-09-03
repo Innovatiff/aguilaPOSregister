@@ -25,11 +25,14 @@ export interface RegisterSettings {
   lockAfterMinutes: number;
 }
 
+// Build-time defaults (set VITE_API_BASE_URL etc. on the hosting provider); users can still change them in Settings.
+const env = import.meta.env as Record<string, string | undefined>;
+
 const defaults: RegisterSettings = {
-  apiBaseUrl: 'http://localhost:4000',
-  registerKey: 'demo-register-key',
-  registerId: 'REG-01',
-  registerName: 'Front Register',
+  apiBaseUrl: env.VITE_API_BASE_URL?.replace(/\/$/, '') || 'http://localhost:4000',
+  registerKey: env.VITE_REGISTER_KEY || 'demo-register-key',
+  registerId: env.VITE_REGISTER_ID || 'REG-01',
+  registerName: env.VITE_REGISTER_NAME || 'Front Register',
   terminalMode: 'simulated',
   terminalAutoApprove: false,
   customerDisplayEnabled: true,
